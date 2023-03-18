@@ -1,7 +1,7 @@
 import { TextField, Button, Box, Alert } from "@mui/material";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import crypt_Request from "../../interceptors/crypto";
+
 import { useCookies } from "react-cookie";
 
 const UserLogin = () => {
