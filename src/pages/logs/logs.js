@@ -3,38 +3,39 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
+// import CardActions from "@mui/material/CardActions";
+// import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
-import NotesIcon from "@mui/icons-material/Notes";
-import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
-import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
-import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+// import Typography from "@mui/material/Typography";
+// import Avatar from "@mui/material/Avatar";
+// import Menu from "@mui/material/Menu";
+// import MenuItem from "@mui/material/MenuItem";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import Divider from "@mui/material/Divider";
+// import IconButton from "@mui/material/IconButton";
+// import Tooltip from "@mui/material/Tooltip";
+// import PersonAdd from "@mui/icons-material/PersonAdd";
+// import Settings from "@mui/icons-material/Settings";
+// import Logout from "@mui/icons-material/Logout";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import NotesIcon from "@mui/icons-material/Notes";
+// import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
+// import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
+// import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
+// import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
-import PersonIcon from "@mui/icons-material/Person";
+// import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+// import PersonIcon from "@mui/icons-material/Person";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
+// import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+// import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ServiceForm from "../../components/serviceForm";
+import print from "../../components/print";
 const Logs = () => {
   const [cookies, setCookie] = useCookies("user");
   const [logs, setLogs] = useState();
@@ -69,7 +70,8 @@ const Logs = () => {
     const res = await data.json();
     // console.log("logs", res);
     if (res.data && res.data.status === "1") {
-      setLogs(res.data.services_list);
+      setLogs(res.data.services_list.reverse());
+      console.log(res.data.services_list);
     }
   };
   const handleChangeLogStatus = async (status) => {
@@ -172,10 +174,20 @@ const Logs = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handlePrintInvoice = (el) => {
+    console.log("cuuuureeent", el);
+    var mywindow = window.open("", "PRINT", "height=600,width=600");
+    console.log(print().innerHTML);
+    mywindow.document.write(print(el).innerHTML);
+    mywindow.document.close();
+    mywindow.focus();
+    mywindow.print();
+    return true;
+  };
   return (
     <>
       <div className={styles.container}>
-        <h1 className={styles.heading}>Service Logs</h1>
+        <h1 className={styles.heading}>Pending Services</h1>
         <Stack
           sx={{
             width: "100%",
@@ -191,141 +203,140 @@ const Logs = () => {
         <div className={styles.main_container}>
           {logs &&
             logs.map((el) => {
+              console.log(el);
               return (
                 <>
                   <Box sx={{ margin: "10" }} className={styles.box}>
                     <Card
                       variant="outlined"
-                      sx={{ minWidth: "100" }}
+                      sx={{ minWidth: "100", padding: "2rem" }}
                       className={styles.card}
                     >
-                      <div className={styles.card_info}>
-                        <div className={styles.card_info_list}>
-                          <PersonIcon></PersonIcon> {el.name}
+                      <div className={styles.flex_container}>
+                        <div className={styles.flex_container_header}>
+                          <div className={styles.model}>
+                            <div
+                              className="div"
+                              style={{ fontSize: "1.5rem", fontWeight: "800" }}
+                            >
+                              {el.bike_model_name}
+                            </div>
+                            <div
+                              className=""
+                              style={{
+                                color: "rgb(63, 61, 61)",
+                                fontWeight: "800",
+                              }}
+                            >
+                              Owner: {el.name}
+                            </div>
+                          </div>
+                          <div className={styles.vehicle_number}>
+                            <div
+                              className="div"
+                              style={{
+                                fontSize: "1.5rem",
+                                fontWeight: "800",
+                                color: "grey",
+                              }}
+                            >
+                              {el.bike_no}
+                            </div>
+                            <div className="">Ph: +91 {el.mobile}</div>
+                          </div>
+                          <div className={styles.edit}>
+                            {" "}
+                            <Button
+                              variant="contained"
+                              sx={{ background: "#1098E1" }}
+                              onClick={(e) => {
+                                // handleClick(e);
+                                const myPromise = new Promise(
+                                  (resolve, reject) => {
+                                    resolve(setCurrentLog(el));
+                                  }
+                                );
+                                myPromise.then(handleClickOpenDialog());
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                          <div className={styles.complete}>
+                            <Button
+                              variant="contained"
+                              sx={{ background: "#E18810" }}
+                              onClick={(e) => {
+                                const myPromise = new Promise(
+                                  (resolve, reject) => {
+                                    resolve(setCurrentLog(el));
+                                  }
+                                );
+                                myPromise.then(handleChangeLogStatus("0"));
+                              }}
+                            >
+                              Complete
+                            </Button>
+                          </div>
                         </div>
-                        <div className={styles.card_info_list}>
-                          <PhoneAndroidIcon></PhoneAndroidIcon> {el.mobile}
+                        <div className={styles.secondary}>
+                          <div className={styles.secondary__first}>
+                            <p>Date: {el.create_on}</p>
+                            <div className={styles.type}>
+                              Type:{" "}
+                              <span className={styles.type_list}>
+                                <h6>Repair</h6>
+                                <h6>Service@ {el.current_km}km</h6>
+                              </span>
+                            </div>
+                          </div>
+                          <div className={styles.secondary__second}>
+                            <div className={styles.secondary__heading}>
+                              Item
+                            </div>
+                            <div className={styles.selected}>
+                              {el.sdq?.length &&
+                                el.sdq.map((elem) => {
+                                  return <span>{elem.service_name}</span>;
+                                })}
+                              {/* <span>Light Repair</span>
+                              <span>Oil Change</span> */}
+                            </div>
+                          </div>
                         </div>
-                        <div className={styles.card_info_list}>
-                          <CurrencyRupeeIcon></CurrencyRupeeIcon>{" "}
-                          {el.service_amount}
+                        <div className={styles.tertiary}>
+                          <h3 className={styles.tertiary__heading}>
+                            Cost:{" "}
+                            <CurrencyRupeeIcon size="large"></CurrencyRupeeIcon>
+                            {el.service_amount}
+                          </h3>
+                          <div className={styles.tertiary__buttons}>
+                            <Button
+                              variant="contained"
+                              sx={{ background: "#E18810" }}
+                            >
+                              Memo
+                            </Button>
+                            <Button
+                              variant="contained"
+                              sx={{ background: "#1098E1" }}
+                            >
+                              Estimation
+                            </Button>
+                            <Button
+                              variant="contained"
+                              sx={{ background: "#F05917" }}
+                              onClick={(e) => {
+                                handlePrintInvoice(el);
+                              }}
+                            >
+                              Invoice
+                            </Button>
+                          </div>
                         </div>
-                        <div className={styles.card_info_list}>
-                          <AccessTimeIcon></AccessTimeIcon>
-                          {el.create_on}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <AccessAlarmIcon></AccessAlarmIcon>
-                          {el.estimate_service_time}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <TwoWheelerIcon />
-                          {el.bike_no}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <Avatar
-                            sx={{
-                              height: 25,
-                              width: 25,
-                              fontSize: 10,
-                              mr: "8px",
-                            }}
-                          >
-                            KM
-                          </Avatar>{" "}
-                          {el.current_km}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <ManageHistoryIcon />
-                          {el.sdq?.length &&
-                            el.sdq.map((elem) => {
-                              return elem.service_name + " | ";
-                            })}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <NotesIcon /> {el.remarks}
-                        </div>
-                      </div>
-                      <div className={styles.card_options}>
-                        {" "}
-                        <Tooltip title="Account settings">
-                          <IconButton
-                            onClick={(e) => {
-                              handleClick(e);
-                              setCurrentLog(el);
-                            }}
-                            size="small"
-                            sx={{ ml: 2 }}
-                            aria-controls={
-                              open ? `account-menu-${el.id}` : undefined
-                            }
-                            aria-haspopup="true"
-                            aria-expanded={open ? "true" : undefined}
-                          >
-                            <MenuIcon></MenuIcon>
-                          </IconButton>
-                        </Tooltip>
                       </div>
                     </Card>
                   </Box>
-                  <Menu
-                    anchorEl={anchorEl}
-                    id={`account-menu-${el.id}`}
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        overflow: "visible",
-                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                        mt: 1.5,
-                        "& .MuiAvatar-root": {
-                          width: 32,
-                          height: 32,
-                          ml: -0.5,
-                          mr: 1,
-                        },
-                        "&:before": {
-                          content: '""',
-                          display: "block",
-                          position: "absolute",
-                          top: 0,
-                          right: 14,
-                          width: 10,
-                          height: 10,
-                          bgcolor: "background.paper",
-                          transform: "translateY(-50%) rotate(45deg)",
-                          zIndex: 0,
-                        },
-                      },
-                    }}
-                    transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                  >
-                    <MenuItem
-                      onClick={(e) => {
-                        handleClose(e);
-                        handleChangeLogStatus("0");
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Settings fontSize="small" />
-                      </ListItemIcon>
-                      Complete
-                    </MenuItem>
-                    <MenuItem
-                      onClick={(e) => {
-                        handleClose(e);
-                        handleClickOpenDialog();
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Logout fontSize="small" />
-                      </ListItemIcon>
-                      Edit
-                    </MenuItem>
-                  </Menu>
                 </>
               );
             })}

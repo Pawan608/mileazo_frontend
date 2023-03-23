@@ -85,7 +85,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
   });
   const getBikeModel = async () => {
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
-    const data = await fetch("http://localhost:5000/api", {
+    const data = await fetch(process.env.REACT_APP_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,6 +109,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
           ...bikeList[`${el.company_name}`],
         };
       });
+      console.log(bikeList);
       setBikeModelList((elem) => {
         return bikeList;
       });
@@ -124,7 +125,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
   };
   const getServices = async () => {
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
-    const data = await fetch("http://localhost:5000/api", {
+    const data = await fetch(process.env.REACT_APP_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

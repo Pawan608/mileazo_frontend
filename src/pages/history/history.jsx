@@ -135,122 +135,100 @@ const History = () => {
           {logs &&
             logs.map((el) => {
               return (
-                <>
-                  <Box sx={{ margin: "10" }} className={styles.box}>
-                    <Card
-                      variant="outlined"
-                      sx={{ minWidth: "100" }}
-                      className={styles.card}
-                    >
-                      <div className={styles.card_info}>
-                        <div className={styles.card_info_list}>
-                          <PersonIcon></PersonIcon> {el.name}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <PhoneAndroidIcon></PhoneAndroidIcon> {el.mobile}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <CurrencyRupeeIcon></CurrencyRupeeIcon>{" "}
-                          {el.service_amount}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <AccessTimeIcon></AccessTimeIcon>
-                          {el.create_on}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <AccessAlarmIcon></AccessAlarmIcon>
-                          {el.estimate_service_time}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <TwoWheelerIcon />
-                          {el.bike_no}
-                        </div>
-                        <div className={styles.card_info_list}>
-                          <Avatar
-                            sx={{
-                              height: 25,
-                              width: 25,
-                              fontSize: 10,
-                              mr: "8px",
+                <Box sx={{ margin: "10" }} className={styles.box}>
+                  <Card
+                    variant="outlined"
+                    sx={{ minWidth: "100", padding: "2rem" }}
+                    className={styles.card}
+                  >
+                    <div className={styles.flex_container}>
+                      <div className={styles.flex_container_header}>
+                        <div className={styles.model}>
+                          <div
+                            className="div"
+                            style={{ fontSize: "1.5rem", fontWeight: "800" }}
+                          >
+                            {el.bike_model_name}
+                          </div>
+                          <div
+                            className=""
+                            style={{
+                              color: "rgb(63, 61, 61)",
+                              fontWeight: "800",
                             }}
                           >
-                            KM
-                          </Avatar>{" "}
-                          {el.current_km}
+                            Owner: {el.name}
+                          </div>
                         </div>
-                        <div className={styles.card_info_list}>
-                          <ManageHistoryIcon />
-                          {el.sdq?.length &&
-                            el.sdq.map((elem) => {
-                              return elem.service_name + " | ";
-                            })}
+                        <div className={styles.vehicle_number}>
+                          <div
+                            className="div"
+                            style={{
+                              fontSize: "1.5rem",
+                              fontWeight: "800",
+                              color: "grey",
+                            }}
+                          >
+                            {el.bike_no}
+                          </div>
+                          <div className="">Ph: +91 {el.mobile}</div>
                         </div>
-                        <div className={styles.card_info_list}>
-                          <NotesIcon /> {el.remarks}
+                        <div className={styles.edit}></div>
+                        <div className={styles.complete}></div>
+                      </div>
+                      <div className={styles.secondary}>
+                        <div className={styles.secondary__first}>
+                          <p>Date: {el.create_on}</p>
+                          <div className={styles.type}>
+                            Type:{" "}
+                            <span className={styles.type_list}>
+                              <h6>Repair</h6>
+                              <h6>Service@ {el.current_km}km</h6>
+                            </span>
+                          </div>
+                        </div>
+                        <div className={styles.secondary__second}>
+                          <div className={styles.secondary__heading}>Item</div>
+                          <div className={styles.selected}>
+                            {el.sdq?.length &&
+                              el.sdq.map((elem) => {
+                                return <span>{elem.service_name}</span>;
+                              })}
+                            {/* <span>Light Repair</span>
+                          <span>Oil Change</span> */}
+                          </div>
                         </div>
                       </div>
-                      <div className={styles.card_options}> </div>
-                    </Card>
-                  </Box>
-                  {/* <Menu
-                    anchorEl={anchorEl}
-                    id={`account-menu-${el.id}`}
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        overflow: "visible",
-                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                        mt: 1.5,
-                        "& .MuiAvatar-root": {
-                          width: 32,
-                          height: 32,
-                          ml: -0.5,
-                          mr: 1,
-                        },
-                        "&:before": {
-                          content: '""',
-                          display: "block",
-                          position: "absolute",
-                          top: 0,
-                          right: 14,
-                          width: 10,
-                          height: 10,
-                          bgcolor: "background.paper",
-                          transform: "translateY(-50%) rotate(45deg)",
-                          zIndex: 0,
-                        },
-                      },
-                    }}
-                    transformOrigin={{ horizontal: "right", vertical: "top" }}
-                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                  >
-                    <MenuItem
-                      onClick={(e) => {
-                        handleClose(e);
-                        handleChangeLogStatus("0");
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Settings fontSize="small" />
-                      </ListItemIcon>
-                      Complete
-                    </MenuItem>
-                    <MenuItem
-                      onClick={(e) => {
-                        handleClose(e);
-                        handleClickOpenDialog();
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Logout fontSize="small" />
-                      </ListItemIcon>
-                      Edit
-                    </MenuItem>
-                  </Menu> */}
-                </>
+                      <div className={styles.tertiary}>
+                        <h3 className={styles.tertiary__heading}>
+                          Cost:{" "}
+                          <CurrencyRupeeIcon size="large"></CurrencyRupeeIcon>
+                          {el.service_amount}
+                        </h3>
+                        <div className={styles.tertiary__buttons}>
+                          <Button
+                            variant="contained"
+                            sx={{ background: "#E18810" }}
+                          >
+                            Memo
+                          </Button>
+                          {/* <Button
+                            variant="contained"
+                            sx={{ background: "#1098E1" }}
+                          >
+                            Estimation
+                          </Button> */}
+                          <Button
+                            variant="contained"
+                            sx={{ background: "#F05917" }}
+                          >
+                            Invoice
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                </Box>
               );
             })}
         </div>

@@ -35,7 +35,7 @@ const UserLogin = () => {
       const response = await data.json();
       console.log(response);
 
-      document.getElementById("login-form").reset();
+      //  document.getElementById("login-form").reset();
       setError({
         status: true,
         msg: response.data.message,
