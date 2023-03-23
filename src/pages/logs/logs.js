@@ -314,12 +314,18 @@ const Logs = () => {
                             <Button
                               variant="contained"
                               sx={{ background: "#E18810" }}
+                              onClick={(e) => {
+                                handlePrintInvoice(el);
+                              }}
                             >
                               Memo
                             </Button>
                             <Button
                               variant="contained"
                               sx={{ background: "#1098E1" }}
+                              onClick={(e) => {
+                                handlePrintInvoice(el);
+                              }}
                             >
                               Estimation
                             </Button>

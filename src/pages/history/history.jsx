@@ -3,40 +3,41 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
+// import CardActions from "@mui/material/CardActions";
+// import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu";
+// import Typography from "@mui/material/Typography";
+// import Avatar from "@mui/material/Avatar";
+// import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
+// import ListItemIcon from "@mui/material/ListItemIcon";
+// import Divider from "@mui/material/Divider";
+// import IconButton from "@mui/material/IconButton";
+// import Tooltip from "@mui/material/Tooltip";
+// import PersonAdd from "@mui/icons-material/PersonAdd";
+// import Settings from "@mui/icons-material/Settings";
+// import Logout from "@mui/icons-material/Logout";
+// import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import NotesIcon from "@mui/icons-material/Notes";
+// import NotesIcon from "@mui/icons-material/Notes";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
-import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
-import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
-import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+// import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
+// import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
+// import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
+// import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
-import PersonIcon from "@mui/icons-material/Person";
+// import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
+// import PersonIcon from "@mui/icons-material/Person";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import print from "../../components/print";
 const History = () => {
   // console.log(process.env.REACT_APP_URL);
   const [cookies, setCookie] = useCookies("user");
   const [logs, setLogs] = useState();
-  const [day, setDay] = useState("1");
+  const [day, setDay] = useState("30");
   const [search, setSearch] = useState();
   const getServices = async () => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
@@ -79,6 +80,16 @@ const History = () => {
     } else {
       setLogs();
     }
+  };
+  const handlePrintInvoice = (el) => {
+    console.log("cuuuureeent", el);
+    var mywindow = window.open("", "PRINT", "height=600,width=600");
+    console.log(print().innerHTML);
+    mywindow.document.write(print(el).innerHTML);
+    mywindow.document.close();
+    mywindow.focus();
+    mywindow.print();
+    return true;
   };
   useEffect(() => {
     getServices();
@@ -209,6 +220,9 @@ const History = () => {
                           <Button
                             variant="contained"
                             sx={{ background: "#E18810" }}
+                            onClick={(e) => {
+                              handlePrintInvoice(el);
+                            }}
                           >
                             Memo
                           </Button>
@@ -221,6 +235,9 @@ const History = () => {
                           <Button
                             variant="contained"
                             sx={{ background: "#F05917" }}
+                            onClick={(e) => {
+                              handlePrintInvoice(el);
+                            }}
                           >
                             Invoice
                           </Button>
