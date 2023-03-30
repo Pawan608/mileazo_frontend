@@ -1,3 +1,10 @@
+@mixin respond($breakpoint) {
+  @if $breakpoint== phone {
+    @media (max-width: 600px) {
+      @content;
+    }
+  }
+}
 .side_container {
   display: flex;
   flex-direction: row;
@@ -28,15 +35,27 @@
   }
 
   .center {
+    height: 90vh;
     padding-left: 10px;
 
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
-
+      height: 90%;
+      // @include respond(phone) {
+      //   display: flex;
+      //   flex-direction: column;
+      //   justify-content: space-around;
+      // }
+      // @media (max-width: 600px) {
+      //   display: flex;
+      //   flex-direction: column;
+      //   justify-content: space-around;
+      //   font-size: 3rem;
+      // }
       .title {
-        font-size: 10px;
+        font-size: 1rem;
         font-weight: bold;
         color: #999;
         margin-top: 15px;
@@ -54,12 +73,12 @@
         }
 
         .icon {
-          font-size: 18px;
+          font-size: 1.2rem;
           color: #7451f8;
         }
 
         span {
-          font-size: 13px;
+          font-size: 1.1rem;
           font-weight: 600;
           color: #888;
           margin-left: 10px;
@@ -92,4 +111,9 @@
       }
     }
   }
+}
+.active_link li {
+  background-color: #ece8ff;
+}
+.inactive {
 }

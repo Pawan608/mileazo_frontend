@@ -11,7 +11,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, NavLink } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
@@ -33,23 +33,87 @@ const Sidebar = () => {
           <div className="center">
             <ul>
               <p className="title">MAIN</p>
+              <NavLink
+                exact
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+                to="/"
+                style={{ textDecoration: "none" }}
+              >
+                <li>
+                  <DashboardIcon className="icon" />
+                  <span>Dashboard</span>
+                </li>
+              </NavLink>
+              <p className="title">SERVICE</p>
+              <NavLink
+                to="/service"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
+                <li>
+                  <AddIcon className="icon" />
+                  <span>Add Service</span>
+                </li>
+              </NavLink>
+              <NavLink
+                to="/logs"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
+                <li>
+                  <PsychologyOutlinedIcon className="icon" />
+
+                  <span>Logs</span>
+                </li>
+              </NavLink>
+              <NavLink
+                to="/history"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
+                <li>
+                  <PsychologyOutlinedIcon className="icon" />
+
+                  <span>History</span>
+                </li>
+              </NavLink>
               <li>
-                <DashboardIcon className="icon" />
-                <span>Dashboard</span>
+                <SettingsApplicationsIcon className="icon" />
+                <span>Settings</span>
               </li>
               <p className="title">LISTS</p>
-              <Link to="/users" style={{ textDecoration: "none" }}>
+              <NavLink
+                to="/users"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
                 <li>
                   <PersonOutlineIcon className="icon" />
                   <span>Users</span>
                 </li>
-              </Link>
-              <Link to="/products" style={{ textDecoration: "none" }}>
+              </NavLink>
+              <NavLink
+                to="/products"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
                 <li>
                   <StoreIcon className="icon" />
                   <span>Products</span>
                 </li>
-              </Link>
+              </NavLink>
               <p className="title">USEFUL</p>
               <li>
                 <InsertChartIcon className="icon" />
@@ -59,36 +123,21 @@ const Sidebar = () => {
                 <NotificationsNoneIcon className="icon" />
                 <span>Notifications</span>
               </li>
-              <p className="title">SERVICE</p>
-              <li>
-                <AddIcon className="icon" />
-                <Link to="/service" style={{ textDecoration: "none" }}>
-                  <span>Add Service</span>
-                </Link>
-              </li>
-              <li>
-                <PsychologyOutlinedIcon className="icon" />
-                <Link to="/logs" style={{ textDecoration: "none" }}>
-                  <span>Logs</span>
-                </Link>
-              </li>
-              <li>
-                <PsychologyOutlinedIcon className="icon" />
-                <Link to="/history" style={{ textDecoration: "none" }}>
-                  <span>History</span>
-                </Link>
-              </li>
-              <li>
-                <SettingsApplicationsIcon className="icon" />
-                <span>Settings</span>
-              </li>
+
               <p className="title">USER</p>
-              <li>
-                <AccountCircleOutlinedIcon className="icon" />
-                <Link to="/profile" style={{ textDecoration: "none" }}>
+              <NavLink
+                to="/profile"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
+                <li>
+                  <AccountCircleOutlinedIcon className="icon" />
+
                   <span>Profile</span>
-                </Link>
-              </li>
+                </li>
+              </NavLink>
               <li
                 onClick={() => {
                   removeCookie("user");

@@ -16,6 +16,7 @@ import Profile from "./pages/profile/profile";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import Logs from "./pages/logs/logs";
 import History from "./pages/history/history";
+import Invoice from "./components/invoice";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -24,7 +25,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="login" element={<Login />} />
-
+          <Route path="invoice" element={<Invoice />} />
           <Route path="/" element={<Sidebar />}>
             <Route
               index

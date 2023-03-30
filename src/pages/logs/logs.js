@@ -3,50 +3,31 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
-// import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-// import Typography from "@mui/material/Typography";
-// import Avatar from "@mui/material/Avatar";
-// import Menu from "@mui/material/Menu";
-// import MenuItem from "@mui/material/MenuItem";
-// import ListItemIcon from "@mui/material/ListItemIcon";
-// import Divider from "@mui/material/Divider";
-// import IconButton from "@mui/material/IconButton";
-// import Tooltip from "@mui/material/Tooltip";
-// import PersonAdd from "@mui/icons-material/PersonAdd";
-// import Settings from "@mui/icons-material/Settings";
-// import Logout from "@mui/icons-material/Logout";
-// import MenuIcon from "@mui/icons-material/Menu";
-// import NotesIcon from "@mui/icons-material/Notes";
-// import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
-// import TwoWheelerIcon from "@mui/icons-material/TwoWheeler";
-// import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-// import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-// import PhoneAndroidIcon from "@mui/icons-material/PhoneAndroid";
-// import PersonIcon from "@mui/icons-material/Person";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
-// import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-// import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ServiceForm from "../../components/serviceForm";
 import print from "../../components/print";
+import InvoiceForm from "../../components/invoiceForm";
 const Logs = () => {
   const [cookies, setCookie] = useCookies("user");
   const [logs, setLogs] = useState();
   const [currentLog, setCurrentLog] = useState();
   const [edit, setEdit] = useState();
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDialogInvoice, setOpenDialogInvoice] = React.useState(false);
+  const [submitInvoice, setSubmitInvoice] = useState(false);
   const [showModal, setShowModal] = useState({
     isShow: false,
     status: "1",
     message: "",
   });
+  const [isMemo, setIsMemo] = useState(false);
   useEffect(() => {
     if (showModal.isShow == true) {
       setTimeout(() => {
@@ -71,7 +52,7 @@ const Logs = () => {
     // console.log("logs", res);
     if (res.data && res.data.status === "1") {
       setLogs(res.data.services_list.reverse());
-      console.log(res.data.services_list);
+      // console.log(res.data.services_list);
     }
   };
   const handleChangeLogStatus = async (status) => {
@@ -162,10 +143,19 @@ const Logs = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+  const handleOpenDialogInvoice = (memo) => {
+    const mypromise = new Promise((resolve, reject) => {
+      resolve(setIsMemo(memo));
+    });
+    mypromise.then(setOpenDialogInvoice(true));
+  };
+  const handleCloseDialogInvoice = () => {
+    setOpenDialogInvoice(false);
+  };
   //   console.log(logs);
   useEffect(() => {
     getServices();
-  }, []);
+  }, [submitInvoice]);
   const [anchorEl, setAnchorEl] = useState();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -175,9 +165,7 @@ const Logs = () => {
     setAnchorEl(null);
   };
   const handlePrintInvoice = (el) => {
-    console.log("cuuuureeent", el);
     var mywindow = window.open("", "PRINT", "height=600,width=600");
-    console.log(print().innerHTML);
     mywindow.document.write(print(el).innerHTML);
     mywindow.document.close();
     mywindow.focus();
@@ -315,7 +303,13 @@ const Logs = () => {
                               variant="contained"
                               sx={{ background: "#E18810" }}
                               onClick={(e) => {
-                                handlePrintInvoice(el);
+                                // handleClick(e);
+                                const myPromise = new Promise(
+                                  (resolve, reject) => {
+                                    resolve(setCurrentLog(el));
+                                  }
+                                );
+                                myPromise.then(handleOpenDialogInvoice(true));
                               }}
                             >
                               Memo
@@ -324,7 +318,13 @@ const Logs = () => {
                               variant="contained"
                               sx={{ background: "#1098E1" }}
                               onClick={(e) => {
-                                handlePrintInvoice(el);
+                                // handleClick(e);
+                                const myPromise = new Promise(
+                                  (resolve, reject) => {
+                                    resolve(setCurrentLog(el));
+                                  }
+                                );
+                                myPromise.then(handleOpenDialogInvoice(false));
                               }}
                             >
                               Estimation
@@ -332,8 +332,17 @@ const Logs = () => {
                             <Button
                               variant="contained"
                               sx={{ background: "#F05917" }}
+                              // onClick={(e) => {
+                              //   handlePrintInvoice(el);
+                              // }}
                               onClick={(e) => {
-                                handlePrintInvoice(el);
+                                // handleClick(e);
+                                const myPromise = new Promise(
+                                  (resolve, reject) => {
+                                    resolve(setCurrentLog(el));
+                                  }
+                                );
+                                myPromise.then(handleOpenDialogInvoice(false));
                               }}
                             >
                               Invoice
@@ -362,6 +371,29 @@ const Logs = () => {
             }}
           >
             Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDialogInvoice} onClose={handleCloseDialogInvoice}>
+        <DialogTitle>Invoice</DialogTitle>
+        <DialogContent>
+          <InvoiceForm
+            currentLog={currentLog}
+            submitInvoice={submitInvoice}
+            setSubmitInvoice={setSubmitInvoice}
+            isMemo={isMemo}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogInvoice}>Cancel</Button>
+          <Button
+            onClick={(e) => {
+              // handleUpdateLogStatus();
+              setSubmitInvoice(true);
+              handleCloseDialog(e);
+            }}
+          >
+            Create
           </Button>
         </DialogActions>
       </Dialog>
