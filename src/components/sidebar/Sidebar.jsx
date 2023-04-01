@@ -26,7 +26,9 @@ const Sidebar = () => {
         <div className="sidebar">
           <div className="top">
             <Link to="/" style={{ textDecoration: "none" }}>
-              <span className="logo">Mileazo</span>
+              <div className="logo">
+                <img src={require("../../images/MileaZo_Logo.png")} className="logo_img" alt="" />
+              </div>
             </Link>
           </div>
           <hr />
