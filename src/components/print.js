@@ -65,7 +65,7 @@ const print = (
 
     <div style="display: flex;
     flex-direction: column;">
-      <div className={container_seller_list}>Date: 31-01-2023</div>
+      <div className={container_seller_list}>Date: ${currentLog.create_on}</div>
       <div className={container_seller_list}>
         GSTIN/UIN: ${profile?.gst_no}
       </div>

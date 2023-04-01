@@ -13,6 +13,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import print from "../../components/print";
+import printHistory from "../../components/printHistory";
 const History = () => {
   // console.log(process.env.REACT_APP_URL);
   const [cookies, setCookie] = useCookies("user");
@@ -61,11 +62,11 @@ const History = () => {
       setLogs();
     }
   };
-  const handlePrintInvoice = (el) => {
+  const handlePrintInvoice = (el, isMemo) => {
     console.log("cuuuureeent", el);
     var mywindow = window.open("", "PRINT", "height=600,width=600");
-    console.log(print().innerHTML);
-    mywindow.document.write(print(el).innerHTML);
+    // console.log(print().innerHTML);
+    mywindow.document.write(printHistory(el, cookies, isMemo).innerHTML);
     mywindow.document.close();
     mywindow.focus();
     mywindow.print();
@@ -201,7 +202,7 @@ const History = () => {
                             variant="contained"
                             sx={{ background: "#E18810" }}
                             onClick={(e) => {
-                              handlePrintInvoice(el);
+                              handlePrintInvoice(el, true);
                             }}
                           >
                             Memo
