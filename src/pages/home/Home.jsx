@@ -10,9 +10,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 const Home = () => {
   const [logs, setLogs] = useState([]);
   const [cookies, setCookie] = useCookies("user");
+  const [value, setValue] = React.useState("1 Week");
   const getServices = async () => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -35,6 +41,9 @@ const Home = () => {
   useEffect(() => {
     getServices();
   }, []);
+  const handleChange = (event) => {
+    setValue(event.target.value);
+  };
   return (
     <div className="home">
       <div className="homeContainer">
@@ -46,7 +55,40 @@ const Home = () => {
         </div>
         <div className="charts">
           <Featured />
-          <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} />
+
+          <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} value={value} />
+          <FormControl>
+            <FormLabel id="demo-controlled-radio-buttons-group">
+              Filter
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-controlled-radio-buttons-group"
+              name="controlled-radio-buttons-group"
+              value={value}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                value="1 Week"
+                control={<Radio />}
+                label="1 Week"
+              />
+              <FormControlLabel
+                value="1 Month"
+                control={<Radio />}
+                label="1 Month"
+              />
+              <FormControlLabel
+                value="3 Month"
+                control={<Radio />}
+                label="3 Month"
+              />
+              <FormControlLabel
+                value="6 Month"
+                control={<Radio />}
+                label="6 Month"
+              />
+            </RadioGroup>
+          </FormControl>
         </div>
         {logs.length ? (
           <div className="listContainer">

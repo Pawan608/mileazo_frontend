@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 const List = ({ logs }) => {
   const [rows, setRows] = useState([]);
-  console.log("loggs", logs);
+  // console.log("loggs", logs);
   // setRows()
   // const rows = [
   //   {
@@ -83,7 +83,7 @@ const List = ({ logs }) => {
       })
     );
   }, [logs]);
-  console.log(rows);
+  // console.log(rows);
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
