@@ -57,13 +57,13 @@ const Chart = ({ aspect, title, value }) => {
   }, [day]);
   // console.log("chart", logs);
   useEffect(() => {
-    console.log("logs", logs);
+    // console.log("logs", logs);
     if (logs.length) {
-      console.log(day);
+      // console.log(day);
       if (day <= 30) {
         const data1 = new Array(day);
         data1.fill([]);
-        console.log(data1);
+        // console.log(data1);
         // const filter = logs.filter(el);
         // const date = new Date(Date.now()).getDate();
         const date_value = Date.now();
@@ -82,10 +82,10 @@ const Chart = ({ aspect, title, value }) => {
         // console.log(data1);
         setChartData(data1.reverse());
       } else {
-        console.log(value);
+        // console.log(value);
         const data1 = new Array(day / 30);
         data1.fill({});
-        console.log(data1);
+        // console.log(data1);
         // const filter = logs.filter(el);
         // const date = new Date(Date.now()).getDate();
         const date_value = Date.now();

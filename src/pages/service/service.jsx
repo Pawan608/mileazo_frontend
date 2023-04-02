@@ -81,6 +81,48 @@ const AddService = () => {
     status: "1",
     message: "",
   });
+  const [modelName, setModelName] = useState();
+  const getVehicleDetail = async (number) => {
+    const userId = cookies.user?.profile_data[0]?.profile?.user_id;
+    // const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
+    console.log(bikeNumber);
+    const data = await fetch(process.env.REACT_APP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+        day: String(360),
+        bike_no: number,
+        purpose: "RECENT_SERVICES",
+      }),
+    });
+    const res = await data.json();
+    console.log("response", res);
+    if (res?.data?.status == "1") {
+      setAddress(res.data.services_list[0].address);
+      setCompany(res.data.services_list[0].bike_company_name);
+      setName(res.data.services_list[0].name);
+      setGst(res.data.services_list[0].gstin);
+      setMobileNumber({
+        value: res.data.services_list[0].mobile,
+        isValid: true,
+        message: "",
+      });
+      setModelName(res.data.services_list[0].bike_model_name);
+      setBikeModel(res.data.services_list[0].bike_model_id);
+    }
+
+    // setBikeModel(bikeModelList[company][`${e.target.value}`]);
+
+    // if (res.data && res.data.status === "1") {
+    //   setLogs(res.data.services_list);
+    // } else {
+    //   setLogs();
+    // }
+  };
+  console.log(modelName);
   const getBikeModel = async () => {
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -231,18 +273,29 @@ const AddService = () => {
                 label="Enter Bike Number"
                 placeholder="JH01BR0689"
                 helperText={bikeNumber.message}
+                value={bikeNumber.value}
                 onInput={(e) => {
                   let regex = new RegExp(
                     /^[A-Z]{2}[0-9]{1,2}(?:[A-Z])?(?:[A-Z]*)?[0-9]{4}$/
                   );
-                  if (regex.test(e.target.value) == true) {
-                    setBikeNumber((el) => {
-                      return { value: e.target.value, isValid: true };
+                  if (regex.test(e.target.value.toUpperCase()) == true) {
+                    const myPromise = new Promise((resolve, reject) => {
+                      resolve(
+                        setBikeNumber((el) => {
+                          return {
+                            value: e.target.value.toUpperCase(),
+                            isValid: true,
+                          };
+                        })
+                      );
                     });
+                    myPromise.then(
+                      getVehicleDetail(e.target.value.toUpperCase())
+                    );
                   } else {
                     setBikeNumber((el) => {
                       return {
-                        value: e.target.value,
+                        value: e.target.value.toUpperCase(),
                         isValid: false,
                         message: "Incorrect Vehicle number",
                       };
@@ -295,8 +348,10 @@ const AddService = () => {
                   labelId="Bike-Model"
                   id="demo-simple-select"
                   // value={bikeModel}
+                  value={modelName ? modelName : ""}
                   onChange={(e) => {
                     setBikeModel(bikeModelList[company][`${e.target.value}`]);
+                    setModelName(e.target.value);
                   }}
                   label="Bike Model"
                   //   onChange={handleChange}
@@ -304,6 +359,7 @@ const AddService = () => {
                   {bikeModelList &&
                     bikeModelList[company] &&
                     Object.keys(bikeModelList[company]).map((el) => {
+                      console.log(el);
                       return <MenuItem value={el}>{el}</MenuItem>;
                     })}
 
