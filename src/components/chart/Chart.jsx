@@ -79,8 +79,9 @@ const Chart = ({ aspect, title, value }) => {
               0,
           };
         });
-        // console.log(data1);
-        setChartData(data1.reverse());
+
+        // console.log(data1.filter((el) => el.length).reverse());
+        setChartData(data1.filter((el) => el.name).reverse());
       } else {
         // console.log(value);
         const data1 = new Array(day / 30);
@@ -106,7 +107,7 @@ const Chart = ({ aspect, title, value }) => {
           };
         });
         // console.log(data1);
-        setChartData(data1.reverse());
+        setChartData(data1.filter((el) => el.name).reverse());
       }
     } else {
       setChartData([]);
