@@ -12,6 +12,7 @@ const Profile = () => {
   const [cookies, setCookie, removeCookie] = useCookies("user");
   // console.log(cookies.user);
   let user = cookies.user;
+  // console.log("useeer", user);
   const [formInput, setFormInput] = useState({
     shop: {
       value: user.profile_data[0].profile.shop_name || "",
@@ -257,10 +258,20 @@ const Profile = () => {
               />
               <TextField
                 sx={{ width: ".49", margin: "5px", mr: "0px", mt: "8px" }}
+                label="User Id"
+                value={user.profile_data[0].id}
+                // onInput={handleChange}
+                name="gstId"
+                disabled
+              />
+              <TextField
+                sx={{ margin: "5px", ml: "0px", mt: "8px" }}
                 label="GSTIN/UIN"
                 value={formInput.gstId.value}
                 onInput={handleChange}
                 name="gstId"
+                size="large"
+                fullWidth
               />
               <div
                 className=""

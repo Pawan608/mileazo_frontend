@@ -16,10 +16,29 @@ import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const Sidebar = () => {
   const [cookies, removeCookie] = useCookies("user");
   const navigate = useNavigate();
   const { dispatch } = useContext(DarkModeContext);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
       <div className="side_container">
@@ -27,7 +46,11 @@ const Sidebar = () => {
           <div className="top">
             <Link to="/" style={{ textDecoration: "none" }}>
               <div className="logo">
-                <img src={require("../../images/MileaZo_Logo.png")} className="logo_img" alt="" />
+                <img
+                  src={require("../../images/MileaZo_Logo.png")}
+                  className="logo_img"
+                  alt=""
+                />
               </div>
             </Link>
           </div>
@@ -141,10 +164,11 @@ const Sidebar = () => {
                 </li>
               </NavLink>
               <li
-                onClick={() => {
-                  removeCookie("user");
-                  navigate("/login");
-                }}
+                // onClick={() => {
+                //   removeCookie("user");
+                //   navigate("/login");
+                // }}
+                onClick={handleClickOpen}
               >
                 <ExitToAppIcon className="icon" />
                 <span>Logout</span>
@@ -162,6 +186,32 @@ const Sidebar = () => {
             ></div>
           </div>
         </div>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{" Are You sure, you want to Logout?"}</DialogTitle>
+          {/* <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Are You sure, you want to Logout?
+            </DialogContentText>
+          </DialogContent> */}
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button
+              onClick={() => {
+                removeCookie("user");
+                navigate("/login");
+                handleClose();
+              }}
+            >
+              Logout
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Outlet />
       </div>
     </>
