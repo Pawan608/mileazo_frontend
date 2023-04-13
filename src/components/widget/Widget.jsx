@@ -14,9 +14,9 @@ const Widget = ({ type }) => {
   const diff = 30;
 
   switch (type) {
-    case "user":
+    case "Services":
       data = {
-        title: "USERS",
+        title: "Services",
         isMoney: false,
         link: "See all users",
         icon: (
@@ -30,9 +30,9 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "order":
+    case "Pending":
       data = {
-        title: "ORDERS",
+        title: "Pending",
         isMoney: false,
         link: "View all orders",
         icon: (
@@ -46,7 +46,7 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "earning":
+    case "Earning":
       data = {
         title: "EARNINGS",
         isMoney: true,
@@ -55,22 +55,6 @@ const Widget = ({ type }) => {
           <MonetizationOnOutlinedIcon
             className="icon"
             style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
-          />
-        ),
-      };
-      break;
-    case "balance":
-      data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "See details",
-        icon: (
-          <AccountBalanceWalletOutlinedIcon
-            className="icon"
-            style={{
-              backgroundColor: "rgba(128, 0, 128, 0.2)",
-              color: "purple",
-            }}
           />
         ),
       };

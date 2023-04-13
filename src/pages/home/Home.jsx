@@ -48,13 +48,13 @@ const Home = () => {
     <div className="home">
       <div className="homeContainer">
         <div className="widgets">
-          <Widget type="user" />
-          <Widget type="order" />
-          <Widget type="earning" />
-          <Widget type="balance" />
+          <Widget type="Services" />
+          <Widget type="Pending" />
+          <Widget type="Earning" />
+          {/* <Widget type="balance" /> */}
         </div>
         <div className="charts">
-          <Featured />
+          {/* <Featured /> */}
 
           <Chart title="Last 6 Months (Revenue)" aspect={2 / 1} value={value} />
           <FormControl>

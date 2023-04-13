@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./service.module.scss";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useCookies } from "react-cookie";
+import ListSubheader from "@mui/material/ListSubheader";
 const setDate = (duration) => {
   if (duration.includes("Day")) {
     const millisecond = new Date().setHours(15 * 24);
@@ -81,6 +82,14 @@ const AddService = () => {
     status: "1",
     message: "",
   });
+  const selectRef = useRef(null);
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    console.log(selectRef);
+    selectRef.current.removeEventListener("keydown", () => {});
+    selectRef.current.removeEventListener("keypress", () => {});
+    selectRef.current.removeEventListener("keyup", () => {});
+  }, []);
   const [modelName, setModelName] = useState();
   const getVehicleDetail = async (number) => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
@@ -466,9 +475,19 @@ const AddService = () => {
                   multiple
                   value={serviceList}
                   onChange={handleChange}
+                  native={false}
+                  autoComplete="off"
+                  ref={selectRef}
+                  disableKeyDown
+                  // open={true}
+                  // onKeyPress={(e) => {
+                  //   console.log(e);
+                  // }}
+                  // defaultOpen={true}
                   input={
                     <OutlinedInput id="select-multiple-chip" label="Chip" />
                   }
+                  MenuProps={{ autoFocus: false }}
                   renderValue={(selected) => (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                       {selected.map((value) => (
@@ -478,17 +497,70 @@ const AddService = () => {
                   )}
                   // MenuProps={MenuProps}
                 >
-                  {Object.keys(services).map((name) => (
-                    <MenuItem
-                      key={name}
-                      value={name}
-                      // style={getStyles(name, personName, theme)}
-                    >
-                      {name}
-                    </MenuItem>
-                  ))}
+                  <ListSubheader
+                    onKeyDown={(e) => {
+                      e.stopPropagation();
+
+                      // console.log(search);
+                      // if (e.keyCode >= 65 && e.keyCode <= 90) {
+                      //   console.log(e);
+                      //   console.log(e.target.value + e.keyCode);
+                      //   setSearch(e.target.value + e.key);
+                      // }
+                      // if (
+                      //   e.target.value.length == 1 &&
+                      //   e.key.toUpperCase() == "BACKSPACE"
+                      // ) {
+                      //   setSearch("");
+                      // }
+                      // if (e.target.value == "") {
+                      //   setSearch("");
+                      // } else {
+                      //   setSearch(e.target.value);
+                      // }
+                    }}
+                    onInput={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Search.."
+                      id="myInput"
+                      // onkeyup="filterFunction()"
+                      style={{ width: "100%" }}
+                      autocomplete="off"
+                    ></input>
+                  </ListSubheader>
+                  {Object.keys(services).map((name) => {
+                    if (
+                      search &&
+                      name.toLowerCase().includes(search.toLowerCase())
+                    )
+                      return (
+                        <MenuItem
+                          key={name}
+                          value={name}
+                          // style={getStyles(name, personName, theme)}
+                        >
+                          {name}
+                        </MenuItem>
+                      );
+                    else if (!search) {
+                      return (
+                        <MenuItem
+                          key={name}
+                          value={name}
+                          // style={getStyles(name, personName, theme)}
+                        >
+                          {name}
+                        </MenuItem>
+                      );
+                    } else return <menuitem></menuitem>;
+                  })}
                 </Select>
               </FormControl>
+
               <TextField
                 sx={{ width: ".49", margin: "5px", ml: "0px", mt: "8px" }}
                 label="Enter Amount"

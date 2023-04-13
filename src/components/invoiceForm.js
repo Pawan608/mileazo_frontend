@@ -23,6 +23,9 @@ const InvoiceForm = ({
         return obj;
       });
     });
+    setDiscount(currentLog.discount);
+    setGST(currentLog.gst);
+    setTotal(currentLog.service_amount);
   }, []);
   // console.log(amountList);
   useEffect(() => {

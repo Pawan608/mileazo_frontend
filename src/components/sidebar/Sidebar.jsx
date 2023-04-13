@@ -110,10 +110,19 @@ const Sidebar = () => {
                   <span>History</span>
                 </li>
               </NavLink>
-              <li>
-                <SettingsApplicationsIcon className="icon" />
-                <span>Settings</span>
-              </li>
+              <NavLink
+                to="/setting"
+                style={{ textDecoration: "none" }}
+                className={({ isActive }) =>
+                  isActive ? "active_link" : "inactive"
+                }
+              >
+                <li>
+                  <PsychologyOutlinedIcon className="icon" />
+
+                  <span>Setting</span>
+                </li>
+              </NavLink>
               <p className="title">LISTS</p>
               <NavLink
                 to="/users"

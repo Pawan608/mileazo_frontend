@@ -17,6 +17,7 @@ import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import Logs from "./pages/logs/logs";
 import History from "./pages/history/history";
 import Invoice from "./components/invoice";
+import Setting from "./pages/setting/setting";
 function App() {
   const { darkMode } = useContext(DarkModeContext);
 
@@ -56,6 +57,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <History />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="setting"
+              element={
+                <ProtectedRoute>
+                  <Setting />
                 </ProtectedRoute>
               }
             />
@@ -111,6 +120,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
               <Route
                 path="new"
                 element={

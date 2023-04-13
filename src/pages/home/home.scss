@@ -1,8 +1,8 @@
 .home {
   display: flex;
-
+  width: 90vw;
   .homeContainer {
-    flex: 6;
+    flex: 5;
 
     .widgets,
     .charts {
