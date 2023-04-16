@@ -17,6 +17,7 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useCookies } from "react-cookie";
+import ListSubheader from "@mui/material/ListSubheader";
 const setDate = (duration, date1) => {
   if (duration.includes("Day")) {
     const millisecond = new Date(date1).setHours(15 * 24);
@@ -83,6 +84,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
     status: "1",
     message: "",
   });
+  const [search, setSearch] = useState("");
   const getBikeModel = async () => {
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -422,17 +424,47 @@ const ServiceForm = ({ setEdit, currentLog }) => {
                 ))}
               </Box>
             )}
-            // MenuProps={MenuProps}
           >
-            {Object.keys(services).map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-                // style={getStyles(name, personName, theme)}
-              >
-                {name}
-              </MenuItem>
-            ))}
+            <ListSubheader
+              onKeyDown={(e) => {
+                e.stopPropagation();
+              }}
+              onInput={(e) => {
+                setSearch(e.target.value);
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Search.."
+                id="myInput"
+                // onkeyup="filterFunction()"
+                style={{ width: "100%" }}
+                autocomplete="off"
+              ></input>
+            </ListSubheader>
+            {Object.keys(services).map((name) => {
+              if (search && name.toLowerCase().includes(search.toLowerCase()))
+                return (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    // style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                );
+              else if (!search) {
+                return (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    // style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                );
+              } else return <menuitem></menuitem>;
+            })}
           </Select>
         </FormControl>
         <TextField

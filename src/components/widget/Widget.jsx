@@ -5,12 +5,12 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-
-const Widget = ({ type }) => {
+import parse from "html-react-parser";
+const Widget = ({ type, wiz_data }) => {
   let data;
 
   //temporary
-  const amount = 100;
+  // const amount = 100;
   const diff = 30;
 
   switch (type) {
@@ -19,6 +19,7 @@ const Widget = ({ type }) => {
         title: "Services",
         isMoney: false,
         link: "See all users",
+        amount: wiz_data?.length || "...",
         icon: (
           <PersonOutlinedIcon
             className="icon"
@@ -35,6 +36,7 @@ const Widget = ({ type }) => {
         title: "Pending",
         isMoney: false,
         link: "View all orders",
+        amount: wiz_data?.length || "...",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"
@@ -51,6 +53,10 @@ const Widget = ({ type }) => {
         title: "EARNINGS",
         isMoney: true,
         link: "View net earnings",
+        amount:
+          wiz_data.reduce((acc, curr) => {
+            return Number(curr.service_amount) + acc;
+          }, 0) || "...",
         icon: (
           <MonetizationOnOutlinedIcon
             className="icon"
@@ -68,7 +74,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {amount}
+          {data.isMoney && parse("&#8377;")} {data.amount}
         </span>
         <span className="link">{data.link}</span>
       </div>

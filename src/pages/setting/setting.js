@@ -11,6 +11,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import userInvoice from "../../components/userInvoice";
+import Report from "../../components/reports/report";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -41,6 +42,7 @@ const Setting = () => {
   const [cookies, setCookie] = useCookies("user");
   const [value, setValue] = React.useState(0);
   const [invoices, setInvoices] = React.useState([]);
+  const [servicesList, setServicesList] = React.useState([]);
   const getInvoice = async () => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -54,13 +56,35 @@ const Setting = () => {
       }),
     });
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
     if (res.data && res.data.status === "1") {
       setInvoices(res.data.invoices);
     }
   };
+  const getReports = async () => {
+    const userId = cookies.user?.profile_data[0]?.profile?.user_id;
+    const data = await fetch(process.env.REACT_APP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+        due: new Date().toISOString().split("T")[0],
+        purpose: "DUE_SERVICES",
+        // user_id: userId,
+      }),
+    });
+    const res = await data.json();
+    console.log(res);
+    if (res.data && res.data.status === "1") {
+      //   setInvoices(res.data.invoices);
+      setServicesList(res.data.services_list);
+    }
+  };
   React.useEffect(() => {
     getInvoice();
+    getReports();
   }, []);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -75,7 +99,7 @@ const Setting = () => {
     mywindow.print();
     return true;
   };
-  console.log(invoices);
+  //   console.log(invoices);
   return (
     <>
       <Box sx={{ width: "100%" }}>
@@ -125,7 +149,7 @@ const Setting = () => {
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Reports
+          {servicesList.length ? <Report serviceList={servicesList} /> : ""}
         </TabPanel>
         <TabPanel value={value} index={2}>
           <ChangePassword></ChangePassword>

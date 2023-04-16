@@ -16,9 +16,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 const Home = () => {
-  const [logs, setLogs] = useState([]);
+  const [history, setHistory] = useState([]);
   const [cookies, setCookie] = useCookies("user");
   const [value, setValue] = React.useState("1 Week");
+  const [logs, setLogs] = useState("");
   const getServices = async () => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -34,11 +35,32 @@ const Home = () => {
       }),
     });
     const res = await data.json();
+    console.log(res);
     if (res.data && res.data.status === "1") {
-      setLogs(res.data.services_list);
+      setHistory(res.data.services_list);
+    }
+  };
+  const getLogs = async () => {
+    const user_id = cookies.user?.profile_data[0]?.profile?.user_id;
+    const data = await fetch(process.env.REACT_APP_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user_id,
+        purpose: "SERVICES",
+      }),
+    });
+    const res = await data.json();
+    // console.log("logs", res);
+    if (res.data && res.data.status === "1") {
+      setLogs(res.data.services_list.reverse());
+      // console.log(res.data.services_list);
     }
   };
   useEffect(() => {
+    getLogs();
     getServices();
   }, []);
   const handleChange = (event) => {
@@ -48,9 +70,9 @@ const Home = () => {
     <div className="home">
       <div className="homeContainer">
         <div className="widgets">
-          <Widget type="Services" />
-          <Widget type="Pending" />
-          <Widget type="Earning" />
+          <Widget type="Services" wiz_data={history} />
+          <Widget type="Pending" wiz_data={logs} />
+          <Widget type="Earning" wiz_data={history} />
           {/* <Widget type="balance" /> */}
         </div>
         <div className="charts">
@@ -90,10 +112,10 @@ const Home = () => {
             </RadioGroup>
           </FormControl>
         </div>
-        {logs.length ? (
+        {history.length ? (
           <div className="listContainer">
             <div className="listTitle">Latest Transactions</div>
-            <Table logs={logs} />
+            <Table logs={history} />
           </div>
         ) : (
           ""

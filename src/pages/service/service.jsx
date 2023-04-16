@@ -83,6 +83,7 @@ const AddService = () => {
     message: "",
   });
   const selectRef = useRef(null);
+  const [submit, setSubmit] = useState(false);
   const [search, setSearch] = useState("");
   useEffect(() => {
     console.log(selectRef);
@@ -113,7 +114,7 @@ const AddService = () => {
       setAddress(res.data.services_list[0].address);
       setCompany(res.data.services_list[0].bike_company_name);
       setName(res.data.services_list[0].name);
-      setGst(res.data.services_list[0].gstin);
+      setGstNumber(res.data.services_list[0].gstin);
       setMobileNumber({
         value: res.data.services_list[0].mobile,
         isValid: true,
@@ -121,6 +122,11 @@ const AddService = () => {
       });
       setModelName(res.data.services_list[0].bike_model_name);
       setBikeModel(res.data.services_list[0].bike_model_id);
+      // setServiceDue(res.data.services_list[0].service_next_date);
+      if (res.data.services_list[0].gstin) {
+        // console.log("eeeeegst");
+        setGst(true);
+      }
     }
 
     // setBikeModel(bikeModelList[company][`${e.target.value}`]);
@@ -208,6 +214,7 @@ const AddService = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmit(true);
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
     const servicesString = serviceList
@@ -254,8 +261,31 @@ const AddService = () => {
       message: res.data?.message,
       isShow: true,
     });
+    if (res.data.status == "1") {
+      setBikeNumber({
+        value: "",
+        isValid: true,
+        message: "",
+      });
+      setServiceList([]);
+      setName("");
+      setMobileNumber({
+        value: "",
+        isValid: true,
+        message: "",
+      });
+      setServiceDue();
+      setAmount();
+      setKilometer();
+      setGst(false);
+      setGstNumber();
+      setAddress("");
+      setRemark("");
+    }
+    setSubmit(false);
   };
   // console.log(bikeModelList);
+  // console.log(document.querySelector("form"));
   return (
     <>
       <div className={styles.main_container}>
@@ -500,24 +530,6 @@ const AddService = () => {
                   <ListSubheader
                     onKeyDown={(e) => {
                       e.stopPropagation();
-
-                      // console.log(search);
-                      // if (e.keyCode >= 65 && e.keyCode <= 90) {
-                      //   console.log(e);
-                      //   console.log(e.target.value + e.keyCode);
-                      //   setSearch(e.target.value + e.key);
-                      // }
-                      // if (
-                      //   e.target.value.length == 1 &&
-                      //   e.key.toUpperCase() == "BACKSPACE"
-                      // ) {
-                      //   setSearch("");
-                      // }
-                      // if (e.target.value == "") {
-                      //   setSearch("");
-                      // } else {
-                      //   setSearch(e.target.value);
-                      // }
                     }}
                     onInput={(e) => {
                       setSearch(e.target.value);
@@ -618,6 +630,7 @@ const AddService = () => {
                         onChange={(e) => {
                           setGst(e.target.checked);
                         }}
+                        checked={gst}
                       />
                     }
                     label="GST"
@@ -663,6 +676,7 @@ const AddService = () => {
                   variant="contained"
                   sx={{ ml: "auto", mr: "auto" }}
                   type="submit"
+                  disabled={submit}
                 >
                   Add Service
                 </Button>

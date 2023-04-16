@@ -3,11 +3,11 @@ import "./invoice.scss";
 import { useCookies } from "react-cookie";
 
 const printHistory = (currentLog, cookies, isMemo) => {
-  console.log(currentLog);
+  // console.log(currentLog);
   const container = document.createElement("div");
   // console.log(cookies);
   const profile = cookies?.user?.profile_data[0].profile;
-  console.log(currentLog, "hey", cookies);
+  // console.log(currentLog, "hey", cookies);
   var html;
   container.classList.add(`container`);
   if (currentLog) {
