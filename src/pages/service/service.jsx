@@ -430,7 +430,7 @@ const AddService = () => {
               <FormControl
                 sx={{ width: ".49", margin: "5px", mr: "0px", mt: "8px" }}
                 onInput={(e) => {
-                  // console.log(e);
+                  // NPM.log(e);
                 }}
                 required
               >

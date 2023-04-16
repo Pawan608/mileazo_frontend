@@ -26,8 +26,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="login" element={<Login />} />
-          <Route path="invoice" element={<Invoice />} />
-          <Route path="/" element={<Sidebar />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Sidebar />
+              </ProtectedRoute>
+            }
+          >
             <Route
               index
               element={
