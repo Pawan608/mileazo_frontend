@@ -86,7 +86,7 @@ const AddService = () => {
   const [submit, setSubmit] = useState(false);
   const [search, setSearch] = useState("");
   useEffect(() => {
-    console.log(selectRef);
+    // console.log(selectRef);
     selectRef.current.removeEventListener("keydown", () => {});
     selectRef.current.removeEventListener("keypress", () => {});
     selectRef.current.removeEventListener("keyup", () => {});
@@ -95,7 +95,7 @@ const AddService = () => {
   const getVehicleDetail = async (number) => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
     // const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
-    console.log(bikeNumber);
+    // console.log(bikeNumber);
     const data = await fetch(process.env.REACT_APP_URL, {
       method: "POST",
       headers: {
@@ -109,7 +109,7 @@ const AddService = () => {
       }),
     });
     const res = await data.json();
-    console.log("response", res);
+    // console.log("response", res);
     if (res?.data?.status == "1") {
       setAddress(res.data.services_list[0].address);
       setCompany(res.data.services_list[0].bike_company_name);
@@ -137,7 +137,7 @@ const AddService = () => {
     //   setLogs();
     // }
   };
-  console.log(modelName);
+  // console.log(modelName);
   const getBikeModel = async () => {
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -255,7 +255,7 @@ const AddService = () => {
       }),
     });
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
     setShowModal({
       status: res.data.status,
       message: res.data?.message,
@@ -398,7 +398,7 @@ const AddService = () => {
                   {bikeModelList &&
                     bikeModelList[company] &&
                     Object.keys(bikeModelList[company]).map((el) => {
-                      console.log(el);
+                      // console.log(el);
                       return <MenuItem value={el}>{el}</MenuItem>;
                     })}
 

@@ -191,7 +191,7 @@ const Logs = () => {
         <div className={styles.main_container}>
           {logs &&
             logs.map((el) => {
-              console.log(el);
+              // console.log(el);
               return (
                 <>
                   <Box sx={{ margin: "10" }} className={styles.box}>

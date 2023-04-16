@@ -51,7 +51,7 @@ const hourList = [
   "7 day",
 ];
 const ServiceForm = ({ setEdit, currentLog }) => {
-  console.log(currentLog);
+  // console.log(currentLog);
   const [cookies, setCookie] = useCookies("user");
   const [bikeNumber, setBikeNumber] = useState({
     value: currentLog.bike_no,
@@ -111,7 +111,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
           ...bikeList[`${el.company_name}`],
         };
       });
-      console.log(bikeList);
+      // console.log(bikeList);
       setBikeModelList((elem) => {
         return bikeList;
       });
@@ -157,7 +157,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
           return services[`${el}`];
         })
         .join(" ");
-      console.log("serviceString", servicesString);
+      // console.log("serviceString", servicesString);
       const date = new Date(serviceDue)?.toISOString().split("T")[0];
       let time;
       if (hour.includes("Hour")) {
@@ -184,7 +184,7 @@ const ServiceForm = ({ setEdit, currentLog }) => {
         address: address,
         purpose: "UPDATE_SERVICE",
       };
-      console.log(obj);
+      // console.log(obj);
       return obj;
     });
   }, [
@@ -209,10 +209,10 @@ const ServiceForm = ({ setEdit, currentLog }) => {
     getServices();
     setServiceList(() => {
       const service = currentLog.sdq.map((el) => {
-        console.log(el.service_name);
+        // console.log(el.service_name);
         return el.service_name;
       });
-      console.log("service", service);
+      // console.log("service", service);
       return service;
     });
   }, []);

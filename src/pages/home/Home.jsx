@@ -35,7 +35,7 @@ const Home = () => {
       }),
     });
     const res = await data.json();
-    console.log(res);
+    // console.log(res);
     if (res.data && res.data.status === "1") {
       setHistory(res.data.services_list);
     }
