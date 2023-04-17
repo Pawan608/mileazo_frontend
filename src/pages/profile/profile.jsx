@@ -122,8 +122,10 @@ const Profile = () => {
       user.profile_data = profile.data.profile_data;
       // console.log(user);
       removeCookie("user");
+      console.log("data wate", user.enddate);
       setCookie("user", JSON.stringify(user), {
-        maxAge: 3600 * 24 * 90,
+        maxAge: 3600 * 24 * 7,
+        expires: new Date(user.enddate),
       });
     } else {
       setShowModal({

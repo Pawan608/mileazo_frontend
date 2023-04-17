@@ -44,7 +44,9 @@ const UserLogin = () => {
 
       if (response.data.status == "1") {
         setCookie("user", JSON.stringify(response.data), {
-          maxAge: 3600 * 24 * 90,
+          // maxAge: 3600 * 24 * 90,
+          maxAge: 3600 * 24 * 7,
+          expires: new Date(response.data.enddate),
         });
         navigate("/");
       }

@@ -7,11 +7,16 @@ const ProtectedRoute = (props) => {
   // console.log(cookies.user);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const checkUserToken = () => {
-    if (cookies?.user?.copouncode == undefined) {
+    if (
+      cookies?.user?.paidStatus == "1" &&
+      new Date(cookies?.user?.enddate).valueOf() >= Date.now()
+    ) {
+      setIsLoggedIn(true);
+      // return navigate("/");
+    } else {
       setIsLoggedIn(false);
       return navigate("/login");
     }
-    setIsLoggedIn(true);
   };
   useEffect(() => {
     checkUserToken();
