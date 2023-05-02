@@ -14,6 +14,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ServiceForm from "../../components/serviceForm";
 import print from "../../components/print";
 import InvoiceForm from "../../components/invoiceForm";
+import Slide from "@mui/material/Slide";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 const Logs = () => {
   const [cookies, setCookie] = useCookies("user");
   const [logs, setLogs] = useState();
@@ -152,6 +156,15 @@ const Logs = () => {
   const handleCloseDialogInvoice = () => {
     setOpenDialogInvoice(false);
   };
+  const [openComplete, setOpenComplete] = React.useState(false);
+
+  const handleClickOpenComplete = () => {
+    setOpenComplete(true);
+  };
+
+  const handleCloseComplete = () => {
+    setOpenComplete(false);
+  };
   //   console.log(logs);
   useEffect(() => {
     getServices();
@@ -260,7 +273,7 @@ const Logs = () => {
                                     resolve(setCurrentLog(el));
                                   }
                                 );
-                                myPromise.then(handleChangeLogStatus("0"));
+                                myPromise.then(handleClickOpenComplete());
                               }}
                             >
                               Complete
@@ -394,6 +407,33 @@ const Logs = () => {
             }}
           >
             Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openComplete}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseComplete}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>
+          {" Are You sure, you want to complete the service?"}
+        </DialogTitle>
+        {/* <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Are You sure, you want to Logout?
+            </DialogContentText>
+          </DialogContent> */}
+        <DialogActions>
+          <Button onClick={handleCloseComplete}>Cancel</Button>
+          <Button
+            onClick={() => {
+              handleChangeLogStatus("0");
+              handleCloseComplete();
+            }}
+          >
+            Complete
           </Button>
         </DialogActions>
       </Dialog>

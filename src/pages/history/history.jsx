@@ -14,12 +14,22 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import print from "../../components/print";
 import printHistory from "../../components/printHistory";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import InvoiceForm from "../../components/invoiceForm";
 const History = () => {
   // console.log(process.env.REACT_APP_URL);
   const [cookies, setCookie] = useCookies("user");
   const [logs, setLogs] = useState();
   const [day, setDay] = useState("30");
   const [search, setSearch] = useState();
+  const [currentLog, setCurrentLog] = useState();
+  const [openDialogInvoice, setOpenDialogInvoice] = React.useState(false);
+  const [isMemo, setIsMemo] = useState(false);
+  const [submitInvoice, setSubmitInvoice] = useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
   const getServices = async () => {
     const userId = cookies.user?.profile_data[0]?.profile?.user_id;
     const data = await fetch(process.env.REACT_APP_URL, {
@@ -72,9 +82,28 @@ const History = () => {
     mywindow.print();
     return true;
   };
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleOpenDialogInvoice = (memo) => {
+    const mypromise = new Promise((resolve, reject) => {
+      resolve(setIsMemo(memo));
+    });
+    mypromise.then(setOpenDialogInvoice(true));
+  };
+  const handleCloseDialogInvoice = () => {
+    setOpenDialogInvoice(false);
+  };
   useEffect(() => {
     getServices();
   }, [day]);
+  useEffect(() => {
+    getServices();
+  }, [submitInvoice]);
   return (
     <>
       <div className={styles.container}>
@@ -202,7 +231,13 @@ const History = () => {
                             variant="contained"
                             sx={{ background: "#E18810" }}
                             onClick={(e) => {
-                              handlePrintInvoice(el, true);
+                              // handlePrintInvoice(el, true);
+                              const myPromise = new Promise(
+                                (resolve, reject) => {
+                                  resolve(setCurrentLog(el));
+                                }
+                              );
+                              myPromise.then(handleOpenDialogInvoice(true));
                             }}
                           >
                             Memo
@@ -217,7 +252,12 @@ const History = () => {
                             variant="contained"
                             sx={{ background: "#F05917" }}
                             onClick={(e) => {
-                              handlePrintInvoice(el);
+                              const myPromise = new Promise(
+                                (resolve, reject) => {
+                                  resolve(setCurrentLog(el));
+                                }
+                              );
+                              myPromise.then(handleOpenDialogInvoice(false));
                             }}
                           >
                             Invoice
@@ -231,6 +271,29 @@ const History = () => {
             })}
         </div>
       </div>
+      <Dialog open={openDialogInvoice} onClose={handleCloseDialogInvoice}>
+        <DialogTitle>Invoice</DialogTitle>
+        <DialogContent>
+          <InvoiceForm
+            currentLog={currentLog}
+            submitInvoice={submitInvoice}
+            setSubmitInvoice={setSubmitInvoice}
+            isMemo={isMemo}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogInvoice}>Cancel</Button>
+          <Button
+            onClick={(e) => {
+              // handleUpdateLogStatus();
+              setSubmitInvoice(true);
+              handleCloseDialog(e);
+            }}
+          >
+            Create
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

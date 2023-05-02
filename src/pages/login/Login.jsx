@@ -54,6 +54,10 @@ const Login = () => {
                     label="Registration"
                     sx={{ textTransform: "none", fontWeight: "bold" }}
                   ></Tab>
+                  <Tab
+                    label="Reset Password"
+                    sx={{ textTransform: "none", fontWeight: "bold" }}
+                  ></Tab>
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>

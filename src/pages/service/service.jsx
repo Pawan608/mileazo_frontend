@@ -19,6 +19,7 @@ import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useCookies } from "react-cookie";
 import ListSubheader from "@mui/material/ListSubheader";
+import { useNavigate } from "react-router-dom";
 const setDate = (duration) => {
   if (duration.includes("Day")) {
     const millisecond = new Date().setHours(15 * 24);
@@ -52,6 +53,7 @@ const hourList = [
   "7 day",
 ];
 const AddService = () => {
+  const navigate = useNavigate();
   const [cookies, setCookie] = useCookies("user");
   const [bikeNumber, setBikeNumber] = useState({
     value: "",
@@ -204,9 +206,11 @@ const AddService = () => {
     }
   }, [showModal]);
   const handleChange = (event) => {
+    console.log("event", event);
     const {
       target: { value },
     } = event;
+    console.log(value);
     setServiceList(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
@@ -262,28 +266,72 @@ const AddService = () => {
       isShow: true,
     });
     if (res.data.status == "1") {
-      setBikeNumber({
-        value: "",
-        isValid: true,
-        message: "",
-      });
-      setServiceList([]);
-      setName("");
-      setMobileNumber({
-        value: "",
-        isValid: true,
-        message: "",
-      });
-      setServiceDue();
-      setAmount();
-      setKilometer();
-      setGst(false);
-      setGstNumber();
-      setAddress("");
-      setRemark("");
+      // setBikeNumber({
+      //   value: "",
+      //   isValid: true,
+      //   message: "",
+      // });
+      // setServiceList([]);
+      // setName("");
+      // setMobileNumber({
+      //   value: "",
+      //   isValid: true,
+      //   message: "",
+      // });
+      // setServiceDue();
+      // setAmount();
+      // setKilometer();
+      // setGst(false);
+      // setGstNumber();
+      // setAddress("");
+      // setRemark("");
+      navigate("/logs");
     }
     setSubmit(false);
   };
+
+  const modifyChip = () => {
+    const chips = document.querySelectorAll(".MuiChip-root");
+
+    if (chips.length)
+      chips.forEach((el) => {
+        if (!el.querySelector(".cross_icon")) {
+          el.style.display = "flex";
+          const close_icon = document.createElement("div");
+          close_icon.classList.add("cross_icon");
+          close_icon.style.width = "1rem";
+          close_icon.style.height = "1rem";
+          close_icon.style.fontSize = "1rem";
+          close_icon.style.cursor = "pointer";
+          close_icon.style.borderRadius = "50%";
+          close_icon.style.borderRadius = "50%";
+          close_icon.style.display = "flex";
+          close_icon.style.alignItems = "center";
+          close_icon.innerText = "x";
+          el.append(close_icon);
+        }
+      });
+    const crossIcons = document.querySelectorAll(".cross_icon");
+    if (crossIcons.length) {
+      crossIcons.forEach((crossIcon) => {
+        crossIcon.removeEventListener("mousedown", handleEvent, { once: true });
+        crossIcon.addEventListener("mousedown", handleEvent, { once: true });
+      });
+    }
+    function handleEvent(e) {
+      const target = e.target
+        .closest(".MuiChip-root")
+        .querySelector(".MuiChip-label").innerText;
+      setServiceList((el) => {
+        return el.filter((elem) => elem !== target);
+      });
+      e.stopPropagation();
+    }
+  };
+  useEffect(() => {
+    modifyChip();
+  }, [serviceList]);
+
   // console.log(bikeModelList);
   // console.log(document.querySelector("form"));
   return (

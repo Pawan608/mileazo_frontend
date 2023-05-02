@@ -90,7 +90,6 @@ const UserLogin = () => {
             Login
           </Button>
         </Box>
-        <NavLink to="/sendpasswordresetemail">Forgot Password ?</NavLink>
         {error.status ? (
           <Alert severity={error.type} sx={{ mt: 3 }}>
             {error.msg}

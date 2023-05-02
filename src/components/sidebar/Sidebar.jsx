@@ -94,7 +94,7 @@ const Sidebar = () => {
                 <li>
                   <PsychologyOutlinedIcon className="icon" />
 
-                  <span>Logs</span>
+                  <span>Pending Services</span>
                 </li>
               </NavLink>
               <NavLink
@@ -123,7 +123,7 @@ const Sidebar = () => {
                   <span>Setting</span>
                 </li>
               </NavLink>
-              <p className="title">LISTS</p>
+              {/* <p className="title">LISTS</p>
               <NavLink
                 to="/users"
                 style={{ textDecoration: "none" }}
@@ -147,8 +147,8 @@ const Sidebar = () => {
                   <StoreIcon className="icon" />
                   <span>Products</span>
                 </li>
-              </NavLink>
-              <p className="title">USEFUL</p>
+              </NavLink> */}
+              {/* <p className="title">USEFUL</p>
               <li>
                 <InsertChartIcon className="icon" />
                 <span>Stats</span>
@@ -156,7 +156,7 @@ const Sidebar = () => {
               <li>
                 <NotificationsNoneIcon className="icon" />
                 <span>Notifications</span>
-              </li>
+              </li> */}
 
               <p className="title">USER</p>
               <NavLink
