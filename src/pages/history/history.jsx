@@ -199,7 +199,10 @@ const History = () => {
                       </div>
                       <div className={styles.secondary}>
                         <div className={styles.secondary__first}>
-                          <p>Date: {el.create_on}</p>
+                          <p>
+                            Date:{" "}
+                            {new Date(el.create_on).toLocaleDateString("en-GB")}
+                          </p>
                           <div className={styles.type}>
                             Type:{" "}
                             <span className={styles.type_list}>

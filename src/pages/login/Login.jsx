@@ -4,10 +4,10 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 import { useState } from "react";
 import { Grid, Card, Tabs, Typography, Tab, Box } from "@mui/material";
-import pic1 from "../login/pic1.png";
+import pic1 from "./../../images/MileaZo_Logo.png";
 import Registration from "./Registration";
 import UserLogin from "./UserLogin";
-
+import ForgotPassword from "./forgotPassword";
 const TabPanel = (props) => {
   const { children, value, index } = props;
   return (
@@ -31,7 +31,7 @@ const Login = () => {
           sx={{
             backgroundImage: `url(${pic1})`,
             backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
+            backgroundSize: "contain",
             backgroundPosition: "center",
             display: { xs: "none", sm: "block" },
           }}
@@ -65,6 +65,9 @@ const Login = () => {
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <Registration />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <ForgotPassword />
               </TabPanel>
             </Box>
             <Box textAlign="center" sx={{ mt: 2 }}></Box>

@@ -18,7 +18,7 @@ const Widget = ({ type, wiz_data }) => {
       data = {
         title: "Services",
         isMoney: false,
-        link: "See all users",
+        // link: "See all users",
         amount: wiz_data?.length || "...",
         icon: (
           <PersonOutlinedIcon
@@ -35,7 +35,7 @@ const Widget = ({ type, wiz_data }) => {
       data = {
         title: "Pending",
         isMoney: false,
-        link: "View all orders",
+        // link: "View all orders",
         amount: wiz_data?.length || "...",
         icon: (
           <ShoppingCartOutlinedIcon
@@ -52,7 +52,7 @@ const Widget = ({ type, wiz_data }) => {
       data = {
         title: "EARNINGS",
         isMoney: true,
-        link: "View net earnings",
+        // link: "View net earnings",
         amount:
           wiz_data.reduce((acc, curr) => {
             return Number(curr.service_amount) + acc;

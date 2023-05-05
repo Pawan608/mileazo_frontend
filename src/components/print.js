@@ -22,6 +22,20 @@ const print = (
   //   container.classList.add(`container`);
   if (currentLog) {
     const html = `
+    <html>
+    <head>
+    <style>
+    @media print {
+      h4.class-name
+      @page{
+      margin-left: 0px;
+      margin-right: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      }
+      }
+    </style>
+    </head?
     <div style="margin: 2rem auto;
     display: flex;
     flex-direction: column;
@@ -42,7 +56,7 @@ const print = (
     <img src=${require("./../images/MileaZo_Logo.png")} alt="" style="width: 100%;
     height: 100%;
     object-fit: contain;"/>
-    Invoice
+    ${isMemo ? "Memo" : "Invoice"}
   </div>
   <div style="display: flex;
   flex-direction: row;
@@ -217,7 +231,9 @@ const print = (
     
     </div>
   </div>
-  </div>`;
+  </div>
+  </html>
+  `;
     container.innerHTML = html;
     return container;
   }
