@@ -149,7 +149,11 @@ const Setting = () => {
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {servicesList.length ? <Report serviceList={servicesList} /> : ""}
+          {servicesList.length ? (
+            <Report serviceList={servicesList} />
+          ) : (
+            "No service Due for today"
+          )}
         </TabPanel>
         <TabPanel value={value} index={2}>
           <ChangePassword></ChangePassword>
