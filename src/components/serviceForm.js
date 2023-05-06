@@ -85,6 +85,47 @@ const ServiceForm = ({ setEdit, currentLog }) => {
     message: "",
   });
   const [search, setSearch] = useState("");
+  const modifyChip = () => {
+    const chips = document.querySelectorAll(".MuiChip-root");
+
+    if (chips.length)
+      chips.forEach((el) => {
+        if (!el.querySelector(".cross_icon")) {
+          el.style.display = "flex";
+          const close_icon = document.createElement("div");
+          close_icon.classList.add("cross_icon");
+          close_icon.style.width = "1rem";
+          close_icon.style.height = "1rem";
+          close_icon.style.fontSize = "1rem";
+          close_icon.style.cursor = "pointer";
+          close_icon.style.borderRadius = "50%";
+          close_icon.style.borderRadius = "50%";
+          close_icon.style.display = "flex";
+          close_icon.style.alignItems = "center";
+          close_icon.innerText = "x";
+          el.append(close_icon);
+        }
+      });
+    const crossIcons = document.querySelectorAll(".cross_icon");
+    if (crossIcons.length) {
+      crossIcons.forEach((crossIcon) => {
+        crossIcon.removeEventListener("mousedown", handleEvent, { once: true });
+        crossIcon.addEventListener("mousedown", handleEvent, { once: true });
+      });
+    }
+    function handleEvent(e) {
+      const target = e.target
+        .closest(".MuiChip-root")
+        .querySelector(".MuiChip-label").innerText;
+      setServiceList((el) => {
+        return el.filter((elem) => elem !== target);
+      });
+      e.stopPropagation();
+    }
+  };
+  useEffect(() => {
+    modifyChip();
+  }, [serviceList]);
   const getBikeModel = async () => {
     const user_type = cookies.user?.profile_data[0]?.profile?.user_type;
     const data = await fetch(process.env.REACT_APP_URL, {
